@@ -126,7 +126,12 @@ var kumoImage;
 // マウス、タッチ移動
 function move(e) {
     var rect = e.target.getBoundingClientRect();
-    const x = e.clientX - rect.left;
+    // マウスとタッチを分岐
+    if(e.clientX){
+        x = e.clientX - rect.left;
+    }else{
+        x = e.touches[0].clientX - rect.left;
+    }
     cloudX = x;
     if(cloudX < BORDER + 35) cloudX = BORDER + 35;
     if(cloudX > WIDTH - 55) cloudX = WIDTH - 55;
@@ -134,14 +139,13 @@ function move(e) {
 canvas.addEventListener("mousemove", move, false);
 canvas.addEventListener("touchmove", move, false);
 
-// マウスクリック、タッチされたら
+// クリックされたら
 function click(e) {
     addFruits(cloudX, OFFSET_Y - 50, nowNo);
     nowNo = nextNo;
     nextNo = Math.floor(Math.random() * 4);
 }
 canvas.addEventListener("click", click, false);
-canvas.addEventListener("touchend", click, false);
 
 // フルーツを追加する
 function addFruits(x, y, no){
